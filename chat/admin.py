@@ -1,3 +1,14 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import ChatRoom
+
+
+class ChatRoomAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', '_users_count', 'created', 'modified')
+    readonly_fields = ('_users_count',)
+    list_display_links = ('id', 'name')
+
+    def _users_count(self, obj):
+        return obj.users.count()
+
+admin.site.register(ChatRoom, ChatRoomAdmin)
