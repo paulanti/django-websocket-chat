@@ -127,3 +127,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'users.User'
+
+# Channels
+ASGI_APPLICATION = 'chat.routing.application'
