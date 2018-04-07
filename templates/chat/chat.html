@@ -1,3 +1,28 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}{{ block.super }} - {{ chat.name }}{% endblock title %}
+
+{% block content %}
+  <div class="row">
+    <div class="col">
+      <div class="alert alert-primary msg" role="alert">
+        <h6 class="alert-heading username">{{ user }}<span class="time" style="float: right">15:00:00</span></h6>
+        <hr>
+        <p class="mb-0 text">Message text</p>
+      </div>
+    </div>
+  </div>
+
+  <nav class="navbar fixed-bottom navbar-light bg-light">
+    <form class="mx-2 my-auto d-inline w-100">
+      <div class="input-group">
+      <input type="text" class="form-control">
+        <span class="input-group-append">
+          <button class="btn btn-outline-primary" type="button">Submit</button>
+        </span>
+      </div>
+    </form>
+  </nav>
+
+{% endblock content %}
