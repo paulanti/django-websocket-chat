@@ -133,6 +133,18 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-# Channels
-# https://channels.readthedocs.io/en/latest/installation.html
-ASGI_APPLICATION = 'chat.routing.application'
+# Channels [https://github.com/django/channels]
+# https://channels.readthedocs.io/en/latest/index.html
+# **************************************************************
+# https://channels.readthedocs.io/en/latest/installation.html#installation
+ASGI_APPLICATION = 'config.routing.application'
+
+# https://channels.readthedocs.io/en/latest/topics/channel_layers.html#configuration
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('redis', 6379)],
+        },
+    },
+}
