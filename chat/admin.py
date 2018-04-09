@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import ChatRoom
+from .models import ChatRoom, Message
 
 
 class ChatRoomAdmin(admin.ModelAdmin):
@@ -12,3 +12,10 @@ class ChatRoomAdmin(admin.ModelAdmin):
         return obj.users.count()
 
 admin.site.register(ChatRoom, ChatRoomAdmin)
+
+
+class MessageAdmin(admin.ModelAdmin):
+    list_display = ('id', 'author', 'chat', 'text', 'created')
+    readonly_fields = ('author', 'text', 'chat')
+
+admin.site.register(Message, MessageAdmin)

@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView
 
-from chat.models import ChatRoom
+from .models import ChatRoom
 
 __all__ = ['chat_rooms_list_view', 'chat_room_detail_view']
 

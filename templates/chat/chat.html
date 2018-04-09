@@ -10,6 +10,13 @@
 {% block content %}
   <div class="row" data-chat-room="{{ chat.id }}" data-user="{{ user }}">
     <div class="col messages">
+      {% for message in chat.messages.all %}
+        <div class="alert alert-primary msg" role="alert">
+          <h6 class="alert-heading username">{{ message.author }}<span class="time" style="float: right">{{ message.get_create_datetime }}</span></h6>
+          <hr>
+          <p class="mb-0 text">{{ message.text }}</p>
+        </div>
+      {% endfor %}
     </div>
   </div>
 

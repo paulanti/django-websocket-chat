@@ -1,7 +1,10 @@
 import json
 
+from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
-from django.utils import timezone
+from django.contrib.auth import get_user_model
+
+from .models import Message
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -30,6 +33,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message_text = text_data_json['message_text']
         message_sender = text_data_json['message_sender']
 
+        # Save message to database
+        message = await self.save_message(message_sender, message_text)
+
         # Send message to room group
         await self.channel_layer.group_send(
             self.room_group_name,
@@ -37,7 +43,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'type': 'chat_message',
                 'message_text': message_text,
                 'message_sender': message_sender,
-                'message_send_datetime': timezone.now().strftime('%d.%m.%Y %H:%M:%S')
+                'message_send_datetime': message.get_create_datetime()
             }
         )
 
@@ -53,3 +59,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'message_sender': message_sender,
             'message_send_datetime': message_send_datetime
         }))
+
+    @database_sync_to_async
+    def save_message(self, message_sender_username: str, message_text: str) -> Message:
+        user_model = get_user_model()
+        user = user_model.objects.get(username=message_sender_username)
+        return Message.objects.create(author=user, text=message_text, chat_id=self.room_name)
